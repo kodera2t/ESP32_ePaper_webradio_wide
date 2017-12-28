@@ -1,0 +1,89 @@
+menu "Web Radio / Bluetooth Speaker"
+
+menu "Wifi Configuration"
+
+config WIFI_SSID
+    string "WiFi SSID"
+	default "myssid"
+	help
+		SSID (network name) to connect to.
+
+config WIFI_PASSWORD
+    string "WiFi Password"
+	default "myssid"
+	help
+		WiFi password (WPA or WPA2) to use.
+
+		Can be left blank if the network has no security set.
+
+endmenu
+
+menu "ePaper Display DEMO Configuration"
+
+config SPIFFS_BASE_ADDR
+    hex "SPIFFS Base address"
+    range 0x100000 0x1FFE000
+    default 0x180000
+    help
+        Starting address of the SPIFFS area in ESP32 Flash
+        Write the address in hex format, 0x180000
+
+config SPIFFS_SIZE
+    int "SPIFFS Size in bytes"
+    range 262144 2097152
+    default 1048576
+
+config SPIFFS_LOG_BLOCK_SIZE
+    int "SPIFFS Logical block size"
+    range 4098 65536
+    default 8192
+
+config SPIFFS_LOG_PAGE_SIZE
+    int "SPIFFS Logical page size"
+    range 256 2048
+    default 256
+    help
+        Set it to the phisycal page size og the used SPI Flash chip.
+endmenu
+
+menu "Audio Output"
+
+choice
+    prompt "Select Audio Output Mode"
+    default I2S
+    help
+        This option selects the audio output.
+
+    config AUDIO_OUTPUT_MODE_I2S
+        bool "Generic I2S"
+    config AUDIO_OUTPUT_MODE_I2S_MERUS
+        bool "Merus Audio I2S"
+    config AUDIO_OUTPUT_MODE_DAC_BUILT_IN
+        bool "Built-In DAC"
+    config AUDIO_OUTPUT_MODE_PDM
+        bool "PDM"
+endchoice
+
+config AUDIO_OUTPUT_MODE
+    int
+    default 0 if AUDIO_OUTPUT_MODE_I2S
+    default 1 if AUDIO_OUTPUT_MODE_I2S_MERUS
+    default 2 if AUDIO_OUTPUT_MODE_DAC_BUILT_IN
+    default 3 if AUDIO_OUTPUT_MODE_PDM
+
+endmenu
+
+menuconfig BT_SPEAKER_MODE
+    bool "Bluetooth Speaker Mode"
+    help
+       Select this option to turn on bluetooth speaker mode.
+       Web radio streaming will be unavailable.
+   depends on CLASSIC_BT_ENABLED
+
+  config SSD1306_6432
+     help
+	only for Web radio mode
+     bool "use SSD1306_6432"
+
+endmenu
+
