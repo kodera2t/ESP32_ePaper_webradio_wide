@@ -26,7 +26,7 @@
 #include "web_radio.h"
 #include "playerconfig.h"
 #include "app_main.h"
-#include "mdns_task.h"
+//#include "mdns_task.h"
 
 ///////////////////////////////////////////////////////////////
 #include <time.h>
